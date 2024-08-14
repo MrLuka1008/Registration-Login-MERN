@@ -17,9 +17,11 @@ const SignIn = () => {
     lastname: true,
     email: true,
     password: true,
+    agree: true,
   });
 
-  // const [validateInput, setValidate] = useState(true);
+  const [cheackAgree, setCheackAgree] = useState(false);
+  const [passHide, setPassHide] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -28,6 +30,16 @@ const SignIn = () => {
       [name]: value,
     }));
     console.log(userInfo);
+  };
+
+  const handleChangeAgree = () => {
+    setCheackAgree((prev) => !prev);
+    console.log(cheackAgree);
+  };
+
+  const handleChangeShowToHide = () => {
+    console.log("clicked");
+    setPassHide((prev) => !prev);
   };
 
   const handleSubmit = (e) => {
@@ -40,11 +52,13 @@ const SignIn = () => {
       lastname: userInfo.lastname.trim() !== "",
       email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userInfo.email),
       password: passwordPattern.test(userInfo.password),
+      agree: cheackAgree !== false,
     };
 
     setValidation(newValidation);
 
     console.log("userInfo", userInfo);
+    console.log("validation", validation);
   };
 
   return (
@@ -82,7 +96,8 @@ const SignIn = () => {
           <div className="mb-8 flex flex-col">
             <Input
               label="Password"
-              type="password"
+              // type="password"
+              type={!passHide ? `password` : "text"}
               handleChange={handleChange}
               name="password"
               isValid={validation.password}
@@ -91,14 +106,23 @@ const SignIn = () => {
               <p className="font-poppins text-xs text-gray-500 mt-1">
                 Use 8 or more characters with a mix of letters, numbers & symbols
               </p>
-              <div className="flex items-center">
-                <BiSolidHide className="cursor-pointer w-4" />
-                <p className="ml-2">Hide</p>
+              <div className="flex items-center cursor-pointer" onClick={handleChangeShowToHide}>
+                {!passHide ? (
+                  <>
+                    <BiSolidHide className="w-4" />
+                    <p className="ml-2">Hide</p>
+                  </>
+                ) : (
+                  <>
+                    <BiSolidShow className="w-4" />
+                    <p className="ml-2">Show</p>
+                  </>
+                )}
               </div>
             </div>
           </div>
           <div className="flex flex-col gap-4">
-            <PriveryPolicy />
+            <PriveryPolicy handleChangeAgree={handleChangeAgree} isValid={validation.agree} />
 
             <div className="flex flex-col gap-6 mt-4">
               <button type="submit" className="bg-gray-500 rounded-3xl text-white px-7 py-2 text-xl">
