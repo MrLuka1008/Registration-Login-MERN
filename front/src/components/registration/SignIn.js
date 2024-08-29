@@ -3,6 +3,7 @@ import Input from "./Input";
 import PriveryPolicy from "./PriveryPolicy";
 import { BiSolidHide, BiSolidShow } from "react-icons/bi";
 import LeftInfo from "./LeftInfo";
+import { Link } from "react-router-dom";
 
 const SignIn = () => {
   const [userInfo, setUserInfo] = useState({
@@ -129,7 +130,10 @@ const SignIn = () => {
                 Sign up
               </button>
               <button>
-                Already have an account? <span className="underline">Log in</span>{" "}
+                Already have an account?{" "}
+                <Link className="underline" to={"/login"}>
+                  Log in
+                </Link>{" "}
               </button>
             </div>
           </div>
